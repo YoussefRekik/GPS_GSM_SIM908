@@ -33,6 +33,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include <stdio.h>
+#include <string.h>
 
 /* USER CODE BEGIN Includes */
 
@@ -51,8 +53,9 @@ void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-
 volatile uint8_t bufferRx_GSM[60];
+char ch[100];
+int i=0,j=0;
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -88,14 +91,23 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_Delay(4000); 
+   HAL_Delay(4000); 
+
   while (1)
   {
-        
-      memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",4); 
+      memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",14); 
       HAL_Delay(2000);
+      memcpy (ch,(char*)bufferRx_GSM,50);
+      //ch=(char*)bufferRx_GSM;
+      for(j=0;j<100;j++){
+        if (ch[j]=='\0') ch[j]='X';
+      }
+      if (strstr(ch,"OK")) i=1;
   }
+  /* USER CODE END 3 */
+
+
   /* USER CODE END 3 */
 
 }

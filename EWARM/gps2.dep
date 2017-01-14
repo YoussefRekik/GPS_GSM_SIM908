@@ -105,6 +105,8 @@
       <file>$PROJ_DIR$\..\Drivers\CMSIS\Include\core_cm4.h</file>
       <file>$PROJ_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h</file>
       <file>$PROJ_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
       <file>$PROJ_DIR$\gps2\Obj\main.__cstat.et</file>
       <file>$PROJ_DIR$\gps2\Obj\stm32f4xx_hal_cortex.__cstat.et</file>
       <file>$PROJ_DIR$\gps2\Obj\stm32f4xx_hal_msp.__cstat.et</file>
@@ -137,7 +139,7 @@
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 24 120</file>
+          <file> 24 122</file>
         </tool>
       </outputs>
     </file>
@@ -154,7 +156,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 115</file>
+          <file> 117</file>
         </tool>
       </outputs>
       <inputs>
@@ -181,7 +183,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 103</file>
+          <file> 105</file>
         </tool>
       </outputs>
       <inputs>
@@ -217,17 +219,13 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 102</file>
+          <file> 104</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 74 73 49 50 61 59 88 96 69 54 76 87 91 93 70 79 81 82 80 78 92 67 83 57 58 94 98 51 71 89 62 90 86 95 77 97 84 85 118</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 76 61 90 81 54 51 97 57 74 93 94 118 50 89 86 85 59 67 95 73 49 98 83 88 96 69 92 91 82 78 87 70 79 80 58 71 62 77 84</file>
+          <file> 74 73 49 50 61 59 88 96 69 54 76 87 91 93 70 79 81 82 80 78 92 67 83 57 58 94 98 51 71 89 62 90 86 95 77 97 84 85 120</file>
         </tool>
       </inputs>
     </file>
@@ -244,7 +242,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 105</file>
+          <file> 107</file>
         </tool>
       </outputs>
       <inputs>
@@ -271,7 +269,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 106</file>
+          <file> 108</file>
         </tool>
       </outputs>
       <inputs>
@@ -298,7 +296,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 110</file>
+          <file> 112</file>
         </tool>
       </outputs>
       <inputs>
@@ -325,7 +323,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 101</file>
+          <file> 103</file>
         </tool>
       </outputs>
       <inputs>
@@ -352,17 +350,17 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 99</file>
+          <file> 101</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 49 74 73 50 61 59 88 96 69 54 76 87 91 93 70 79 81 82 80 78 92 67 83 57 58 94 98 51 71 89 62 90 86 95 77 97 84 85</file>
+          <file> 49 74 73 50 61 59 88 96 69 54 76 87 91 93 70 79 81 82 80 78 92 67 83 57 58 94 98 51 71 89 62 90 86 95 77 97 84 85 100 99</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 54 73 49 61 57 74 58 59 67 69 70 76 71 62 50 51 89 90 86 97 85 98 83 88 96 78 87 79 80 77 84 81 92 91 93 82 94 95</file>
+          <file> 73 82 54 49 61 57 74 92 76 59 67 91 95 99 100 50 51 89 90 86 97 85 98 83 88 96 69 81 93 58 78 87 70 79 80 94 71 62 77 84</file>
         </tool>
       </inputs>
     </file>
@@ -379,7 +377,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 113</file>
+          <file> 115</file>
         </tool>
       </outputs>
       <inputs>
@@ -406,7 +404,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 114</file>
+          <file> 116</file>
         </tool>
       </outputs>
       <inputs>
@@ -433,7 +431,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 104</file>
+          <file> 106</file>
         </tool>
       </outputs>
       <inputs>
@@ -460,7 +458,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 116</file>
+          <file> 118</file>
         </tool>
       </outputs>
       <inputs>
@@ -487,7 +485,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 112</file>
+          <file> 114</file>
         </tool>
       </outputs>
       <inputs>
@@ -514,7 +512,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 117</file>
+          <file> 119</file>
         </tool>
       </outputs>
       <inputs>
@@ -541,7 +539,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 111</file>
+          <file> 113</file>
         </tool>
       </outputs>
       <inputs>
@@ -568,7 +566,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 107</file>
+          <file> 109</file>
         </tool>
       </outputs>
       <inputs>
@@ -595,7 +593,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 100</file>
+          <file> 102</file>
         </tool>
       </outputs>
       <inputs>
@@ -622,7 +620,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 109</file>
+          <file> 111</file>
         </tool>
       </outputs>
       <inputs>
@@ -649,7 +647,7 @@
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 108</file>
+          <file> 110</file>
         </tool>
       </outputs>
       <inputs>
@@ -668,13 +666,13 @@
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 120</file>
+          <file> 122</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ILINK</name>
-          <file> 121 20 26 32 29 37 36 34 44 47 31 23 38 27 39 48 30 25 45 21 22 123 122 119 124</file>
+          <file> 123 20 26 32 29 37 36 34 44 47 31 23 38 27 39 48 30 25 45 21 22 125 124 121 126</file>
         </tool>
       </inputs>
     </file>

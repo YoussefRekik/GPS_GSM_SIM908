@@ -27,6 +27,11 @@
         <ColumnWidth3>65</ColumnWidth3>
       </Build>
       <TerminalIO/>
+      <Select-Ambiguous-Definitions>
+        <ColumnWidth0>470</ColumnWidth0>
+        <ColumnWidth1>67</ColumnWidth1>
+        <ColumnWidth2>806</ColumnWidth2>
+      </Select-Ambiguous-Definitions>
     </Static>
     <Windows>
       <Wnd0>
@@ -60,12 +65,30 @@
             <Factory>Build</Factory>
             <Session/>
           </Tab>
+          <Tab>
+            <Identity>TabID-14584-6711</Identity>
+            <TabName>Ambiguous Definitions</TabName>
+            <Factory>Select-Ambiguous-Definitions</Factory>
+            <Session/>
+          </Tab>
         </Tabs>
         <SelectedTab>1</SelectedTab>
       </Wnd1>
     </Windows>
     <Editor>
       <Pane>
+        <Tab>
+          <Factory>TextEditor</Factory>
+          <Filename>$WS_DIR$\..\Src\stm32f4xx_it.c</Filename>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <SelStart>0</SelStart>
+          <SelEnd>0</SelEnd>
+          <XPos2>0</XPos2>
+          <YPos2>63</YPos2>
+          <SelStart2>3628</SelStart2>
+          <SelEnd2>3628</SelEnd2>
+        </Tab>
         <Tab>
           <Factory>TextEditor</Factory>
           <Filename>$WS_DIR$\..\Src\main.c</Filename>
@@ -75,21 +98,33 @@
           <SelEnd>0</SelEnd>
           <XPos2>0</XPos2>
           <YPos2>89</YPos2>
-          <SelStart2>3550</SelStart2>
-          <SelEnd2>3550</SelEnd2>
+          <SelStart2>3724</SelStart2>
+          <SelEnd2>3724</SelEnd2>
         </Tab>
-        <ActiveTab>0</ActiveTab>
+        <ActiveTab>1</ActiveTab>
         <Tab>
           <Factory>TextEditor</Factory>
-          <Filename>$WS_DIR$\..\Src\stm32f4xx_it.c</Filename>
+          <Filename>$WS_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c</Filename>
           <XPos>0</XPos>
           <YPos>0</YPos>
           <SelStart>0</SelStart>
           <SelEnd>0</SelEnd>
           <XPos2>0</XPos2>
-          <YPos2>66</YPos2>
-          <SelStart2>2309</SelStart2>
-          <SelEnd2>2309</SelEnd2>
+          <YPos2>790</YPos2>
+          <SelStart2>30262</SelStart2>
+          <SelEnd2>30262</SelEnd2>
+        </Tab>
+        <Tab>
+          <Factory>TextEditor</Factory>
+          <Filename>$WS_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h</Filename>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <SelStart>0</SelStart>
+          <SelEnd>0</SelEnd>
+          <XPos2>0</XPos2>
+          <YPos2>637</YPos2>
+          <SelStart2>32990</SelStart2>
+          <SelEnd2>33010</SelEnd2>
         </Tab>
       </Pane>
       <ActivePane>0</ActivePane>
@@ -121,7 +156,7 @@
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
-                <Bottom>442</Bottom>
+                <Bottom>430</Bottom>
                 <Right>328</Right>
                 <x>-2</x>
                 <y>-2</y>
@@ -130,7 +165,7 @@
                 <sizeHorzCX>146413</sizeHorzCX>
                 <sizeHorzCY>291971</sizeHorzCY>
                 <sizeVertCX>241581</sizeVertCX>
-                <sizeVertCY>648175</sizeVertCY>
+                <sizeVertCY>630657</sizeVertCY>
               </Rect>
             </Wnd0>
           </Sizes>
@@ -148,14 +183,14 @@
               <Rect>
                 <Top>-2</Top>
                 <Left>-2</Left>
-                <Bottom>198</Bottom>
+                <Bottom>210</Bottom>
                 <Right>1368</Right>
                 <x>-2</x>
                 <y>-2</y>
                 <xscreen>1370</xscreen>
-                <yscreen>200</yscreen>
+                <yscreen>212</yscreen>
                 <sizeHorzCX>1002928</sizeHorzCX>
-                <sizeHorzCY>291971</sizeHorzCY>
+                <sizeHorzCY>309489</sizeHorzCY>
                 <sizeVertCX>146413</sizeVertCX>
                 <sizeVertCY>291971</sizeVertCY>
               </Rect>
