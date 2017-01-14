@@ -53,7 +53,7 @@ void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-volatile uint8_t bufferRx_GSM[60];
+volatile uint8_t bufferRx_GSM[100];
 char ch[100];
 int i=0,j=0;
 
@@ -95,15 +95,72 @@ int main(void)
 
   while (1)
   {
+    //AT
+    while(!(strstr(ch,"OK"))){
       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",14); 
       HAL_Delay(2000);
-      memcpy (ch,(char*)bufferRx_GSM,50);
-      //ch=(char*)bufferRx_GSM;
+      memcpy (ch,(char*)bufferRx_GSM,sizeof(bufferRx_GSM));
       for(j=0;j<100;j++){
         if (ch[j]=='\0') ch[j]='X';
       }
-      if (strstr(ch,"OK")) i=1;
+    }
+    i=1;
+    memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+    memset( ch, 'X', sizeof(bufferRx_GSM));
+    
+    //AT+CGPSPWR=1
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",14); 
+      HAL_Delay(2000);
+      i=2;
+      memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+      memset( ch, 'X', sizeof(bufferRx_GSM));
+      
+    //AT+CSQ
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",14); 
+      HAL_Delay(2000);
+      i=2;
+      memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+      memset( ch, 'X', sizeof(bufferRx_GSM));
+    
+      //AT+SAPBR=1,1
+       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",14); 
+       HAL_Delay(2000);
+       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+       memset( ch, 'X', sizeof(bufferRx_GSM));
+       i=3;
+       
+       //AT+HTTPINIT
+       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPINIT\r",14); 
+       HAL_Delay(2000);
+       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+       memset( ch, 'X', sizeof(bufferRx_GSM));
+       i=4;
+       
+       //AT+HTTPPARA=
+       
+       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPPARA=\"URL\",\"www.google.com\"\r",40);
+       HAL_Delay(40000);
+       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+       memset( ch, 'X', sizeof(bufferRx_GSM));
+       i=5;
+       
+       //AT+HTTPACTION=0
+       
+       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPACTION=0\r",34);
+       HAL_Delay(20000);
+       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+       memset( ch, 'X', sizeof(bufferRx_GSM));
+       i=5;
+       
+       //AT+HTTPREAD
+       
+       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPREAD\r",34);
+       HAL_Delay(20000);
+       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
+       memset( ch, 'X', sizeof(bufferRx_GSM));
+       i=6;
+    
   }
   /* USER CODE END 3 */
 
