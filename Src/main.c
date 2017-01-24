@@ -53,8 +53,9 @@ void SystemClock_Config(void);
 void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-volatile uint8_t bufferRx_GSM[100];
-char ch[100];
+void RST_BUFFER(void);
+volatile uint8_t bufferRx_GSM[500];
+char location[500];
 int i=0,j=0;
 
 /* USER CODE BEGIN PFP */
@@ -98,14 +99,82 @@ int main(void)
     //AT
     do{
       i=0;
-      memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",4); 
       i=1;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
       i=2;
       HAL_Delay(2000);
+    
+   //AT+CGPSPWR=1
+   do{
+      i=0;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",14); 
+      i=1;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=2;
+      HAL_Delay(2000);
       
+   //AT+CGPSRST=0
+   do{
+      i=0;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSRST=0\r",14); 
+      i=1;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=2;
+      HAL_Delay(2000);
+      
+  //AT+CGPSSTATUS? wait for the gps to get to 3D Fix   (location unknown -> 2D fix -> 3D fix)
+   do{
+      i=0;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSSTATUS?\r",14); 
+      i=1;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\n3D Fix\r\n")!=0);
+      i=2;
+      HAL_Delay(2000);
+      
+   //AT+CGPSINF=0
+
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSINF=0\r",14); 
+      location = (char*)bufferRx_GSM ; 
+      i=2;
+      HAL_Delay(2000);
+   
+   //AT+CSQ
+
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",18); 
+      i=1;
+      HAL_Delay(2000);
+
+   
+   //AT+SAPBR=1,1
+   do{
+      i=0;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",18); 
+      i=1;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=2;
+      HAL_Delay(2000);
+      
+   
       
       //memcpy (ch,(char*)bufferRx_GSM,sizeof(bufferRx_GSM));
 
@@ -406,7 +475,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void RST_BUFFER(void)
+{
+  memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+}
 /* USER CODE END 4 */
 
 /**
