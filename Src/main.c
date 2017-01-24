@@ -55,7 +55,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void RST_BUFFER(void);
 volatile uint8_t bufferRx_GSM[500];
-char location[500];
+char* location;
 int i=0,j=0;
 
 /* USER CODE BEGIN PFP */
@@ -110,38 +110,38 @@ int main(void)
     
    //AT+CGPSPWR=1
    do{
-      i=0;
+      i=3;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",14); 
-      i=1;
+      i=4;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=2;
+      i=5;
       HAL_Delay(2000);
       
    //AT+CGPSRST=0
    do{
-      i=0;
+      i=6;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSRST=0\r",14); 
-      i=1;
+      i=7;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=2;
+      i=8;
       HAL_Delay(2000);
       
   //AT+CGPSSTATUS? wait for the gps to get to 3D Fix   (location unknown -> 2D fix -> 3D fix)
    do{
-      i=0;
+      i=9;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSSTATUS?\r",14); 
-      i=1;
+      i=10;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\n3D Fix\r\n")!=0);
-      i=2;
+      i=11;
       HAL_Delay(2000);
       
    //AT+CGPSINF=0
@@ -149,8 +149,8 @@ int main(void)
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSINF=0\r",14); 
-      location = (char*)bufferRx_GSM ; 
-      i=2;
+      location = (char*)bufferRx_GSM ;
+      i=12;
       HAL_Delay(2000);
    
    //AT+CSQ
@@ -158,23 +158,59 @@ int main(void)
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",18); 
-      i=1;
+      i=13;
       HAL_Delay(2000);
 
    
    //AT+SAPBR=1,1
    do{
-      i=0;
+      i=14;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",18); 
-      i=1;
+      i=15;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=2;
+      i=16;
       HAL_Delay(2000);
       
+   //AT+HTTPINIT
+   do{
+      i=17;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPINIT\r",18); 
+      i=18;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=19;
+      HAL_Delay(2000);
    
+   //AT+HTTPPARA=?
+   do{
+      i=20;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPPARA=\"URL\",\"www.google.com\"\r",100); 
+      i=21;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=22;
+      HAL_Delay(2000);
+      
+  //AT+HTTPACTION=0
+   do{
+      i=23;
+      RST_BUFFER();
+      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPACTION=0\r",18); 
+      i=24;
+      HAL_Delay(2000);
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=25;
+      HAL_Delay(2000);
+      
+   //AT+HTTPREAD no need to read the response given the fact this just a simple GET request
       
       //memcpy (ch,(char*)bufferRx_GSM,sizeof(bufferRx_GSM));
 
