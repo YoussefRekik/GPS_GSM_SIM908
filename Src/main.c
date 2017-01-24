@@ -96,15 +96,20 @@ int main(void)
   while (1)
   {
     //AT
-    while(!(strstr(ch,"OK"))){
-      memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",14); 
+    do{
+      i=0;
+      memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",4); 
+      i=1;
       HAL_Delay(2000);
-      memcpy (ch,(char*)bufferRx_GSM,sizeof(bufferRx_GSM));
-      for(j=0;j<100;j++){
-        if (ch[j]=='\0') ch[j]='X';
-      }
-    }
+      }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
+      i=2;
+      HAL_Delay(2000);
+      
+      
+      //memcpy (ch,(char*)bufferRx_GSM,sizeof(bufferRx_GSM));
+
+    /*
     i=1;
     memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
     memset( ch, 'X', sizeof(bufferRx_GSM));
@@ -160,7 +165,7 @@ int main(void)
        memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
        memset( ch, 'X', sizeof(bufferRx_GSM));
        i=6;
-    
+    */
   }
   /* USER CODE END 3 */
 
