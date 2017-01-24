@@ -133,6 +133,7 @@
       <file>$PROJ_DIR$\gps2\Obj\stm32f4xx_hal_tim.pbi</file>
       <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
       <file>$PROJ_DIR$\gps2\Obj\gps2.pbd</file>
+      <file>$PROJ_DIR$\..\..\STM32_USB-Host-Device_Lib_V2.2.0\Project\USB_Device_Examples\VCP\src\app.c</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c</name>
@@ -283,7 +284,7 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 44 111 96 86 31 54 87 24 94 75 68 103 61 47 32 33 72 123 16 13 29 57 97 65 118 110 42 108 50 125 67 74 70 119 64 25 66 71 34 100</file>
+          <file> 31 44 86 111 96 54 87 24 94 75 68 103 61 47 32 33 72 123 16 13 29 57 97 65 118 110 42 108 50 125 67 74 70 119 64 25 66 71 34 100</file>
         </tool>
       </inputs>
     </file>
@@ -619,10 +620,6 @@
         <tool>
           <name>ICCARM</name>
           <file> 57 65 118 54 103 110 31 94 123 111 68 74 16 50 70 119 108 44 64 67 75 42 72 61 125 25 24 47 66 86 71 32 87 13 34 33 100 96</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 111 118 31 65 24 94 125 103 72 123 70 68 66 71 54 47 86 32 87 33 96 110 61 57 42 67 74 119 64 34 100 108 75 16 50 44 25 13</file>
         </tool>
       </inputs>
     </file>

@@ -54,7 +54,8 @@ void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void RST_BUFFER(void);
-volatile uint8_t bufferRx_GSM[500];
+double nmea2dec(char*);
+uint8_t bufferRx_GSM[500];
 char* location;
 int i=0,j=0;
 
@@ -92,64 +93,71 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-   HAL_Delay(4000); 
-
+   HAL_Delay(4000);
+   RST_BUFFER();
+   //BufferOriginal=(int *)bufferRx_GSM;
   while (1)
   {
     //AT
+    i=0;
     do{
-      i=0;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",4); 
-      i=1;
-      HAL_Delay(2000);
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",sizeof("AT\r")); 
+      HAL_Delay(1000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=2;
-      HAL_Delay(2000);
-    
+    i=2;
    //AT+CGPSPWR=1
+    RST_BUFFER();
    do{
       i=3;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",14); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",sizeof("AT+CGPSPWR=1\r")); 
       i=4;
-      HAL_Delay(2000);
+      HAL_Delay(1000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
       i=5;
-      HAL_Delay(2000);
       
    //AT+CGPSRST=0
    do{
       i=6;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSRST=0\r",14); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSRST=0\r",sizeof("AT+CGPSRST=0\r")); 
       i=7;
-      HAL_Delay(2000);
+      HAL_Delay(5000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
       i=8;
-      HAL_Delay(2000);
       
   //AT+CGPSSTATUS? wait for the gps to get to 3D Fix   (location unknown -> 2D fix -> 3D fix)
    do{
       i=9;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSSTATUS?\r",14); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSSTATUS?\r",sizeof("AT+CGPSSTATUS?\r")); 
       i=10;
-      HAL_Delay(2000);
-      }while(strcmp((char*)bufferRx_GSM,"\r\n3D Fix\r\n")!=0);
+      HAL_Delay(5000);
+   }while(strcmp((char*)bufferRx_GSM,"\r\n+CGPSSTATUS: Location 2D Fix\r\n\r\nOK\r\n")!=0);
       i=11;
-      HAL_Delay(2000);
       
    //AT+CGPSINF=0
 
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSINF=0\r",14); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSINF=2\r",sizeof("AT+CGPSINF=2\r")); 
       location = (char*)bufferRx_GSM ;
+      char *lon;
+      char *lat;
+      strcpy(lon,strtok(location, ","));
+      strcpy(lat,strtok(location, ","));
+      double longtitude =nmea2dec(lon);
+      int len = snprintf(NULL, 0, "%f", longtitude);
+      char *flon= (char *) malloc(sizeof(char)*(len+1));
+      snprintf(flon, len, "%f", longtitude);
+      double lattitude =nmea2dec(lat);
+      int len2 = snprintf(NULL, 0, "%f", lattitude);
+      char *flat= (char *) malloc(sizeof(char)*(len2+1));
+      snprintf(flat, len2, "%f", lattitude);
       i=12;
       HAL_Delay(2000);
    
@@ -157,7 +165,7 @@ int main(void)
 
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",18); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",sizeof("AT+CSQ\r")); 
       i=13;
       HAL_Delay(2000);
 
@@ -167,7 +175,7 @@ int main(void)
       i=14;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",18); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",sizeof("AT+SAPBR=1,1\r")); 
       i=15;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
@@ -179,19 +187,24 @@ int main(void)
       i=17;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPINIT\r",18); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPINIT\r",sizeof("AT+HTTPINIT\r")); 
       i=18;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
       i=19;
       HAL_Delay(2000);
-   
+   char tosend[100];
+   strcpy(tosend,"AT+HTTPPARA=\"URL\",\"vps268495.ovh.net/insert.php?lon=");
+   strcat(tosend,flon);
+   strcat(tosend,"&lat=");
+   strcat(tosend,flat);
+   strcat(tosend,"\"\r");
    //AT+HTTPPARA=?
    do{
       i=20;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPPARA=\"URL\",\"www.google.com\"\r",100); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) tosend,sizeof(tosend)); 
       i=21;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
@@ -203,74 +216,14 @@ int main(void)
       i=23;
       RST_BUFFER();
       //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPACTION=0\r",18); 
+      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPACTION=0\r",sizeof("AT+HTTPACTION=0\r")); 
       i=24;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
       i=25;
       HAL_Delay(2000);
       
-   //AT+HTTPREAD no need to read the response given the fact this just a simple GET request
-      
-      //memcpy (ch,(char*)bufferRx_GSM,sizeof(bufferRx_GSM));
 
-    /*
-    i=1;
-    memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-    memset( ch, 'X', sizeof(bufferRx_GSM));
-    
-    //AT+CGPSPWR=1
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",14); 
-      HAL_Delay(2000);
-      i=2;
-      memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-      memset( ch, 'X', sizeof(bufferRx_GSM));
-      
-    //AT+CSQ
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",14); 
-      HAL_Delay(2000);
-      i=2;
-      memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-      memset( ch, 'X', sizeof(bufferRx_GSM));
-    
-      //AT+SAPBR=1,1
-       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",14); 
-       HAL_Delay(2000);
-       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-       memset( ch, 'X', sizeof(bufferRx_GSM));
-       i=3;
-       
-       //AT+HTTPINIT
-       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPINIT\r",14); 
-       HAL_Delay(2000);
-       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-       memset( ch, 'X', sizeof(bufferRx_GSM));
-       i=4;
-       
-       //AT+HTTPPARA=
-       
-       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPPARA=\"URL\",\"www.google.com\"\r",40);
-       HAL_Delay(40000);
-       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-       memset( ch, 'X', sizeof(bufferRx_GSM));
-       i=5;
-       
-       //AT+HTTPACTION=0
-       
-       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPACTION=0\r",34);
-       HAL_Delay(20000);
-       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-       memset( ch, 'X', sizeof(bufferRx_GSM));
-       i=5;
-       
-       //AT+HTTPREAD
-       
-       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPREAD\r",34);
-       HAL_Delay(20000);
-       memset( (char*)bufferRx_GSM, 'X', sizeof(bufferRx_GSM));
-       memset( ch, 'X', sizeof(bufferRx_GSM));
-       i=6;
-    */
   }
   /* USER CODE END 3 */
 
@@ -513,7 +466,38 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void RST_BUFFER(void)
 {
+  huart2.pRxBuffPtr=bufferRx_GSM;
   memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
+}
+
+double nmea2dec(char *nmea)
+{
+    int idx, dot = 0;
+    double dec = 0;
+    for (idx=0; idx<strlen(nmea);idx++){
+        if (nmea[idx] == '.'){
+            dot = idx;
+            break;
+        }
+    }
+ 
+    if (dot < 3)
+        return 0;
+ 
+    int i,dd;
+    double mm;
+    char cdd[5], cmm[10];
+    memset(&cdd, 0, 5);
+    memset(&cmm, 0, 10);
+    strncpy(cdd, nmea, dot-2);
+    strcpy(cmm, nmea+dot-2);
+    dd = atoi(cdd);    
+    mm = atof(cmm);
+ 
+    dec = dd + (mm/60);
+ 
+    return dec;
+   
 }
 /* USER CODE END 4 */
 

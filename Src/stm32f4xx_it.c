@@ -79,8 +79,9 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-   HAL_UART_Receive_IT(&huart2, bufferRx_GSM, 50);
+   HAL_UART_Receive_IT(&huart2, bufferRx_GSM, 500);
   /* USER CODE END USART2_IRQn 1 */
+
 }
 
 /* USER CODE BEGIN 1 */
