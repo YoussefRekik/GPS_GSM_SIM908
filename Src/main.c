@@ -135,7 +135,7 @@ int main(void)
    }while(strcmp((char*)bufferRx_GSM,"\r\n+CGPSSTATUS: Location 2D Fix\r\n\r\nOK\r\n")!=0);
     
       
-   //AT+CGPSINF=0
+   //AT+CGPSINF=2
 
       RST_BUFFER();
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSINF=2\r",sizeof("AT+CGPSINF=2\r")); 
@@ -152,7 +152,6 @@ int main(void)
       int len2 = snprintf(NULL, 0, "%f", lattitude);
       char *flat= (char *) malloc(sizeof(char)*(len2+1));
       snprintf(flat, len2, "%f", lattitude);
-      i=12;
       HAL_Delay(2000);
    
    //AT+CSQ
