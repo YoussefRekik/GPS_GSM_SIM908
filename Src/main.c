@@ -55,6 +55,15 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 void RST_BUFFER(void);
 double nmea2dec(char*);
+typedef enum {
+  sim908_ON,
+  sim908_SLP
+}sim908state;
+typedef enum {
+  NO_TRANS=0,
+  GPS_ON_OFF=0x01,
+  GPS_OFF_ON=0x02
+}sim908Transition;
 uint8_t bufferRx_GSM[500];
 char* location;
 int i=0,j=0;
@@ -95,55 +104,40 @@ int main(void)
   /* USER CODE BEGIN WHILE */
    HAL_Delay(4000);
    RST_BUFFER();
-   //BufferOriginal=(int *)bufferRx_GSM;
   while (1)
   {
     //AT
-    i=0;
     do{
       RST_BUFFER();
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT\r",sizeof("AT\r")); 
       HAL_Delay(1000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-    i=2;
    //AT+CGPSPWR=1
     RST_BUFFER();
    do{
-      i=3;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSPWR=1\r",sizeof("AT+CGPSPWR=1\r")); 
-      i=4;
       HAL_Delay(1000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=5;
       
    //AT+CGPSRST=0
    do{
-      i=6;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSRST=0\r",sizeof("AT+CGPSRST=0\r")); 
-      i=7;
-      HAL_Delay(5000);
+      HAL_Delay(1000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=8;
       
   //AT+CGPSSTATUS? wait for the gps to get to 3D Fix   (location unknown -> 2D fix -> 3D fix)
    do{
-      i=9;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
-      HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSSTATUS?\r",sizeof("AT+CGPSSTATUS?\r")); 
-      i=10;
+       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSSTATUS?\r",sizeof("AT+CGPSSTATUS?\r")); 
       HAL_Delay(5000);
    }while(strcmp((char*)bufferRx_GSM,"\r\n+CGPSSTATUS: Location 2D Fix\r\n\r\nOK\r\n")!=0);
-      i=11;
+    
       
    //AT+CGPSINF=0
 
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CGPSINF=2\r",sizeof("AT+CGPSINF=2\r")); 
       location = (char*)bufferRx_GSM ;
       char *lon;
@@ -164,34 +158,24 @@ int main(void)
    //AT+CSQ
 
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+CSQ\r",sizeof("AT+CSQ\r")); 
-      i=13;
       HAL_Delay(2000);
 
    
    //AT+SAPBR=1,1
    do{
-      i=14;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+SAPBR=1,1\r",sizeof("AT+SAPBR=1,1\r")); 
-      i=15;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=16;
       HAL_Delay(2000);
       
    //AT+HTTPINIT
    do{
-      i=17;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPINIT\r",sizeof("AT+HTTPINIT\r")); 
-      i=18;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=19;
       HAL_Delay(2000);
    char tosend[100];
    strcpy(tosend,"AT+HTTPPARA=\"URL\",\"vps268495.ovh.net/insert.php?lon=");
@@ -199,28 +183,21 @@ int main(void)
    strcat(tosend,"&lat=");
    strcat(tosend,flat);
    strcat(tosend,"\"\r");
+   
    //AT+HTTPPARA=?
    do{
-      i=20;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) tosend,sizeof(tosend)); 
-      i=21;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=22;
       HAL_Delay(2000);
       
   //AT+HTTPACTION=0
    do{
-      i=23;
       RST_BUFFER();
-      //memset( (char*)bufferRx_GSM, '\0', sizeof(bufferRx_GSM));
       HAL_UART_Transmit_IT(&huart2, (uint8_t *) "AT+HTTPACTION=0\r",sizeof("AT+HTTPACTION=0\r")); 
-      i=24;
       HAL_Delay(2000);
       }while(strcmp((char*)bufferRx_GSM,"\r\nOK\r\n")!=0);
-      i=25;
       HAL_Delay(2000);
       
 
